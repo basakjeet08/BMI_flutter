@@ -1,9 +1,11 @@
-import 'package:bmi_flutter/reusable_button.dart';
+import 'package:bmi_flutter/screens/result_screen.dart';
+import 'package:bmi_flutter/components/reusable_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'reusable_card.dart';
-import 'reusable_icon_content.dart';
-import 'constants.dart';
+import '../components/reusable_card.dart';
+import '../components/constants.dart';
+import '../calculator_brain.dart';
+import 'package:bmi_flutter/components/reusable_icon_content.dart';
 
 class InputPage extends StatefulWidget {
   const InputPage({super.key});
@@ -184,7 +186,7 @@ class _InputPageState extends State<InputPage> {
                               icon: FontAwesomeIcons.minus,
                               myFunction: () {
                                 setState(() {
-                                  age --;
+                                  age--;
                                 });
                               },
                             ),
@@ -208,14 +210,39 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
+          GestureDetector(
+            onTap: () {
+              CalculatorBrain calc = CalculatorBrain(height: height, weight: weight);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(
+                    bmiResult: calc.calculateBMI(),
+                    resultText: calc.getResult(),
+                    interpretation: calc.getInterpretation(),
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              color: kBottomContainerColor,
+              margin: const EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              height: kBottomContainerHeight,
+              child: const Center(
+                child: Text(
+                  'CALCULATE',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
           )
         ],
       ),
     );
   }
 }
+
+
